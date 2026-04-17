@@ -18,9 +18,14 @@ class LudoGameEngine @Inject constructor(
         if (!rules.isValidDice(move.steps)) {
             return Result.failure(IllegalArgumentException("Invalid dice value"))
         }
+        val nextPlayerIndex = if (rules.shouldGrantExtraTurn(move.steps)) {
+            state.currentPlayerIndex
+        } else {
+            (state.currentPlayerIndex + 1) % state.players.size
+        }
         state = state.copy(
             diceValue = move.steps,
-            currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.size
+            currentPlayerIndex = nextPlayerIndex
         )
         return Result.success(state)
     }

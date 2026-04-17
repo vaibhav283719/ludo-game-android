@@ -19,7 +19,13 @@ class AIPlayer @Inject constructor() {
         return when (difficulty) {
             AIDifficulty.EASY -> movable.random()
             AIDifficulty.MEDIUM -> movable.maxByOrNull { it.position }
-            AIDifficulty.HARD -> movable.minByOrNull { it.position }
+            AIDifficulty.HARD -> {
+                // Prioritise spreading coverage: bring home tokens onto the board before advancing,
+                // but only when dice == 6 and home tokens are available.
+                val homeTokens = movable.filter { it.position == -1 }
+                if (homeTokens.isNotEmpty()) homeTokens.first()
+                else movable.maxByOrNull { it.position }
+            }
         }
     }
 }

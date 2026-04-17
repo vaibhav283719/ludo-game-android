@@ -16,11 +16,15 @@ class LoginViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    private val _loginSuccess = MutableStateFlow(false)
+    val loginSuccess: StateFlow<Boolean> = _loginSuccess
+
     fun signInGuest() {
         viewModelScope.launch {
             _isLoading.value = true
-            authUseCases.signInGuest()
+            val result = authUseCases.signInGuest()
             _isLoading.value = false
+            _loginSuccess.value = result.isSuccess
         }
     }
 }

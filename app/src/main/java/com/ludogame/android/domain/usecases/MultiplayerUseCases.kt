@@ -10,5 +10,6 @@ class MultiplayerUseCases @Inject constructor(
 ) {
     fun createRoomCode(): String = repository.generateRoomCode()
     suspend fun createRoom(room: Room): Result<Unit> = repository.createRoom(room)
+    suspend fun joinRoom(roomCode: String, playerId: String): Result<Unit> = repository.joinRoom(roomCode, playerId)
     fun observeRoom(roomCode: String): Flow<Room> = repository.observeRoom(roomCode)
 }
